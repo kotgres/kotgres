@@ -2,7 +2,7 @@
 
 **This library is in alpha, and the API is subject to change**
 
-This is a efficient Kotlin ORM to access your Postgres database (also works with Java).
+This is a blazing-fast Kotlin ORM to access your Postgres database _(also works with Java)_.
 
 It stands out because it is:
 
