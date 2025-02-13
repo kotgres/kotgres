@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
  */
 internal object ApLogger {
 
-    private val logger = LoggerFactory.getLogger("KOTGRES")
+    private val logger = LoggerFactory.getLogger("io.kotgres.orm")
 
     fun debug(msg: String) {
         logger.debug(msg)
