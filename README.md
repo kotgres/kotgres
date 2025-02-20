@@ -6,17 +6,17 @@ This is a blazing-fast Kotlin ORM to access your Postgres database _(also works 
 
 It stands out because it is:
 
-✅ **Blazing fast**: between 1st and 2nd place among the most used Kotlin/Java ORM for Postgres (according to our benchmarks)
+✅ **Blazing fast**: trading blows with ORMLite as the fastest Kotlin/Java ORM for Postgres (according to our benchmarks)
 
-✅ **Simple, opinionated & low-api surface**: only one way to do things to avoid confusion
+✅ **Simple &low-api surface**: only one way to do things to avoid confusion
 
-✅ **Postgres-only**: no other databases will ever be integrated, allowing us to achieve the best performance
+✅ **Postgres-only**: to keep things simple and maximize performance (no other databases will ever be integrated)
 
 ✅ **Extensible**: you can accommodate any use cases by adding new operators, using raw queries, ...
 
-✅ **No-config**: more XML or YAML files, only minimal annotations on your entities
+✅ **No-config**: no more XML or YAML files, only minimal annotations on your entities
 
-✅ **Clean architecture friendly**: more XML or YAML files, only minimal annotations on your entities
+✅ **Clean architecture friendly**: does not leak into your domain or presentation layers
 
 
 ## Installation
