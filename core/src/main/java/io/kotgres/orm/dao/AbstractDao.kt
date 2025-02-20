@@ -28,7 +28,6 @@ import io.kotgres.orm.exceptions.dao.KotgresColumnNotFoundInQueryResultException
 import io.kotgres.orm.exceptions.dao.KotgresDaoUnexpectedReturningException
 import io.kotgres.orm.exceptions.dao.KotgresUnexpectedGetByUniqueResultsException
 import io.kotgres.orm.exceptions.internal.KotgresInternalException
-import io.kotgres.orm.exceptions.query.KotgresBindingsMatchException
 import io.kotgres.orm.internal.ApLogger
 import io.kotgres.orm.internal.utils.Debug
 import io.kotgres.orm.internal.utils.QueryUtils
@@ -37,11 +36,7 @@ import io.kotgres.orm.types.TypeResolver
 import io.kotgres.orm.types.base.AbstractMapper
 import io.kotgres.orm.types.custom.EnumMapper
 import org.postgresql.util.PSQLException
-import java.sql.Connection
-import java.sql.PreparedStatement
-import java.sql.ResultSet
-import java.sql.Statement
-import java.sql.Types
+import java.sql.*
 
 // public should ideally be private but needs to be public due to inline functions
 abstract class AbstractDao<E>(val pool: AbstractKotgresConnectionPool) {
@@ -229,8 +224,6 @@ abstract class AbstractDao<E>(val pool: AbstractKotgresConnectionPool) {
     // TODO we need to match the columns the user is using for the bindings
     // TODO to find the mappers and be able to use them effectively
     fun runSelect(query: String, bindings: List<Any?>, trx: KotgresTransaction? = null): List<E> {
-        checkNumberOfBindings(query, bindings)
-
         maybeLogQuery(query)
 
         return useDaoPreparedStatement(trx, query) { st, conn ->
@@ -357,8 +350,6 @@ abstract class AbstractDao<E>(val pool: AbstractKotgresConnectionPool) {
         bindings: List<Any?>,
         trx: KotgresTransaction?
     ): Int {
-        checkNumberOfBindings(query, bindings)
-
         return useDaoPreparedStatement(trx, query) { st, conn ->
             addBindingsToPreparedStatementWithoutMapper(bindings, st, conn)
 
@@ -380,8 +371,6 @@ abstract class AbstractDao<E>(val pool: AbstractKotgresConnectionPool) {
         bindings: List<ValueWithMapper>,
         trx: KotgresTransaction?
     ): Int {
-        checkNumberOfBindings(query, bindings)
-
         return useDaoPreparedStatement(trx, query) { st, conn ->
             addBindingsToPreparedStatement(bindings, st, conn)
 
@@ -464,7 +453,10 @@ abstract class AbstractDao<E>(val pool: AbstractKotgresConnectionPool) {
     }
 
     protected fun getMapperByColumn(columnName: String): AbstractMapper<*> =
-        allFields[columnName]?.mapper ?: throw KotgresColumnNotFoundInEntityException(columnName, allFields.keys.toList())
+        allFields[columnName]?.mapper ?: throw KotgresColumnNotFoundInEntityException(
+            columnName,
+            allFields.keys.toList()
+        )
 
     protected fun buildBindingsForInsert(entity: E): List<ValueWithMapper> {
         return insertFields.entries
@@ -554,15 +546,6 @@ abstract class AbstractDao<E>(val pool: AbstractKotgresConnectionPool) {
                 mapperInstance.addToStatement(binding, preparedStatement, bindingPosition, conn)
             }
             bindingPosition++
-        }
-    }
-
-    private fun checkNumberOfBindings(query: String, bindings: List<Any?>) {
-        val numberOfBindingsInQuery = query.count { it == '?' }
-        val numberOfBindingsPassed = bindings.size
-
-        if (numberOfBindingsInQuery != numberOfBindingsPassed) {
-            throw KotgresBindingsMatchException(numberOfBindingsInQuery, numberOfBindingsPassed)
         }
     }
 

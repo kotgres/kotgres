@@ -13,14 +13,33 @@ import kotlin.test.assertTrue
 
 class TestBindingsInRawQueries : KotgresTest() {
 
-    private val userDao:NoPrimaryKeyDao<User> by lazy {
+    private val userDao: NoPrimaryKeyDao<User> by lazy {
         DaoManager.getNoPrimaryKeyDao(User::class.java, kotgresConnectionPool)
     }
 
     @Test
     fun `can get users over 18 with raw query and binding`() {
 
-        val adultUsersRaw = userDao.runSelect("SELECT * FROM users WHERE age >= ?", listOf(null))
+        val adultUsersRaw = userDao.runSelect("SELECT * FROM users WHERE age >= ?", listOf(18))
+
+        adultUsersRaw.forEach { user ->
+            assertTrue(user.age!! >= 18)
+        }
+    }
+
+    @Test
+    fun `can get users under 18 with raw query and binding`() {
+
+        val adultUsersRaw = userDao.runSelect("SELECT * FROM users WHERE age < ?", listOf(18))
+
+        adultUsersRaw.forEach { user ->
+            assertTrue(user.age!! < 18)
+        }
+    }
+
+    @Test
+    fun `raw query works even when there is interrogation in strings tha could be confused with bindings`() {
+        val adultUsersRaw = userDao.runSelect("SELECT * FROM users WHERE age >= ? AND name != '?name?'", listOf(18))
 
         adultUsersRaw.forEach { user ->
             assertTrue(user.age!! >= 18)
