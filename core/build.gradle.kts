@@ -3,10 +3,11 @@ val kspVersion: String by project
 plugins {
     kotlin("jvm")
     kotlin("plugin.serialization") version "2.1.0"
+    `maven-publish`
 }
 
 group = "io.kotgres"
-version = "0.1-SNAPSHOT"
+version = "0.1.1"
 
 repositories {
     mavenCentral()
@@ -47,3 +48,25 @@ java {
     withSourcesJar()
     withJavadocJar()
 }
+
+/**
+ * JITPACK PUBLISHING
+ */
+afterEvaluate {
+    publishing {
+        publications {
+            create("java", MavenPublication::class) {
+                from(components["java"])
+
+                groupId = "io.kotgres"
+                artifactId = "kotgres"
+                version = "0.1.1"
+            }
+        }
+    }
+}
+
+
+/**
+ * MAVEN PUBLISHING (TODO)
+ */
