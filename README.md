@@ -8,7 +8,7 @@ It stands out because it is:
 
 ✅ **Blazing fast**: trading blows with ORMLite as the fastest Kotlin/Java ORM for Postgres (according to our benchmarks)
 
-✅ **Simple &low-api surface**: only one way to do things to avoid confusion
+✅ **Simple & low-api surface**: only one way to do things to avoid confusion
 
 ✅ **Postgres-only**: to keep things simple and maximize performance (no other databases will ever be integrated)
 
