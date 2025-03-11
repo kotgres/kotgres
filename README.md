@@ -56,8 +56,8 @@ repositories {
 dependencies {
     <...>
     implementation("com.github.kotgres:kotgres-dsl:v0.1.1")
-    ksp("com.github.kotgres:kotgres:v0.1.2")
-    implementation("com.github.kotgres:kotgres:v0.1.2")
+    ksp("com.github.kotgres:kotgres:v0.1.3")
+    implementation("com.github.kotgres:kotgres:v0.1.3")
 }
 ```
 
@@ -71,8 +71,8 @@ repositories {
 dependencies {
     <...>
     implementation 'com.github.kotgres:kotgres-dsl:v0.1.2'
-    ksp 'com.github.kotgres:kotgres:v0.1.2'
-    implementation 'com.github.kotgres:kotgres:v0.1.2'
+    ksp 'com.github.kotgres:kotgres:v0.1.3'
+    implementation 'com.github.kotgres:kotgres:v0.1.3'
 }
 ```
 
