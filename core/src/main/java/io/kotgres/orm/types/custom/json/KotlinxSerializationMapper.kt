@@ -1,6 +1,7 @@
 package io.kotgres.orm.types.custom.json
 
 import io.kotgres.orm.types.base.CustomMapper
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 

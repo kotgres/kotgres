@@ -2,7 +2,7 @@ val kspVersion: String by project
 
 plugins {
     kotlin("jvm")
-    kotlin("plugin.serialization") version "2.1.0"
+    kotlin("plugin.serialization") version "1.9.25"
     `maven-publish`
 }
 
@@ -18,10 +18,10 @@ dependencies {
     // kotlin
     implementation(kotlin("stdlib-jdk8"))
     // kotgres dsl
-    implementation("com.github.kotgres:kotgres-dsl:0.1.1")
+    implementation("com.github.kotgres:kotgres-dsl:v0.1.2")
     // metaprogramming
     implementation("com.google.devtools.ksp:symbol-processing-api:$kspVersion")
-    implementation("com.squareup:kotlinpoet-ksp:2.0.0")
+    implementation("com.squareup:kotlinpoet-ksp:1.14.2")
     // database
     implementation("org.postgresql:postgresql:42.6.0")
     implementation("commons-dbutils:commons-dbutils:1.8.0")
@@ -32,7 +32,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.11.0")
     implementation("com.fasterxml.jackson.core:jackson-core:2.18.2")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.18.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
     // logging
     implementation("org.slf4j:slf4j-api:1.7.30")

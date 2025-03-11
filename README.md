@@ -29,7 +29,7 @@ To add it to your project add this to your plugins section:
 ```kotlin
 plugins {
     <...>
-    id("com.google.devtools.ksp") version "2.1.0-1.0.29"
+    id("com.google.devtools.ksp") version "1.9.25-1.0.20"
 }
 ```
 
@@ -38,7 +38,7 @@ Or if you use Groovy (aka `build.gradle`):
 ```groovy
 plugins {
     <...>
-    id 'com.google.devtools.ksp' version '2.1.0-1.0.29'
+    id 'com.google.devtools.ksp' version '1.9.25-1.0.20'
 }
 ```
 
@@ -55,8 +55,9 @@ repositories {
 
 dependencies {
     <...>
-    implementation("com.github.kotgres:kotgres:v0.1.2")
     implementation("com.github.kotgres:kotgres-dsl:v0.1.1")
+    ksp("com.github.kotgres:kotgres:v0.1.2")
+    implementation("com.github.kotgres:kotgres:v0.1.2")
 }
 ```
 
@@ -69,8 +70,9 @@ repositories {
 
 dependencies {
     <...>
+    implementation 'com.github.kotgres:kotgres-dsl:v0.1.2'
+    ksp 'com.github.kotgres:kotgres:v0.1.2'
     implementation 'com.github.kotgres:kotgres:v0.1.2'
-    implementation 'com.github.kotgres:kotgres-dsl:v0.1.1'
 }
 ```
 
