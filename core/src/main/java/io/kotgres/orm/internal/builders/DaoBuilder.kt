@@ -51,16 +51,17 @@ import java.util.UUID
 
 
 // TODO find a way to not always add these to Dao since they bloat it
+// TODO disable adding JSON types for now, since they make DAOs crash for project not having those dependencies
 private val EXTRA_DATA_TYPES =
     listOf(
         LocalDateTime::class,
         UUID::class,
         Date::class,
         OffsetDateTime::class,
-        JSONObject::class,
-        JsonElement::class,
-        JsonNode::class,
-        JsonObject::class,
+//        JSONObject::class,
+//        JsonElement::class,
+//        JsonNode::class,
+//        JsonObject::class,
     )
 
 private val EXTRA_EXCEPTION_TYPES =
