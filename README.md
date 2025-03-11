@@ -45,7 +45,7 @@ plugins {
 
 ### Add the dependency
 
-The library is currently distributed through Jitpack, planning to release on Maven Central soon. To install, add this to your `build.gradke.kts`:
+The library is currently distributed through Jitpack, planning to release on Maven Central soon. To install, add this to your `build.gradle.kts`:
 
 ```kotlin
 repositories {
@@ -199,7 +199,7 @@ fun main() {
 
 5. Before running the code, you will need a database engine running on `localhost:54333`, with the username, password and database name: `kotgres`
 
-You can quickly bring one upm, using docker. You can install it [here](https://docs.docker.com/desktop/).
+You can quickly bring one up, using docker. You can install it [here](https://docs.docker.com/desktop/).
 
 Once you have it, you can paste this code in a `docker-compose.yml` file:
 ```yaml
@@ -219,7 +219,10 @@ And just run `docker compose up -d`
 
 6. If you now run your `main` function in `Main.kt` you should get a result like this in console:
 
-![kotgres quickstart result](media/quickstart-result.png)
+```
+New user has id 1
+There are 1 users in the database
+```
 
 7. Congratulations 🎉 You have successfully created a Kotlin application that uses Kotgres to connect to a PostgreSQL database!
 
