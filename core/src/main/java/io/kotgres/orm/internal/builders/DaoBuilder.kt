@@ -2,24 +2,15 @@
 
 package io.kotgres.orm.internal.builders
 
-import com.fasterxml.jackson.databind.JsonNode
+//import com.fasterxml.jackson.databind.JsonNode
+//import org.json.JSONObject
 import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.getAnnotationsByType
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFile
-import com.google.gson.JsonElement
-import com.squareup.kotlinpoet.AnnotationSpec
-import com.squareup.kotlinpoet.CodeBlock
-import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.ParameterSpec
+import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import com.squareup.kotlinpoet.PropertySpec
-import com.squareup.kotlinpoet.STAR
-import com.squareup.kotlinpoet.TypeSpec
-import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.ksp.toClassName
 import io.kotgres.orm.annotations.Table
 import io.kotgres.orm.connection.AbstractKotgresConnectionPool
@@ -40,14 +31,11 @@ import io.kotgres.orm.internal.utils.Debug
 import io.kotgres.orm.internal.utils.toSnakeCase
 import io.kotgres.orm.types.TypeResolver
 import io.kotgres.orm.types.base.CustomMapper
-import kotlinx.serialization.json.JsonObject
-import org.json.JSONObject
 import java.lang.reflect.Constructor
 import java.sql.ResultSet
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
-import java.util.Date
-import java.util.UUID
+import java.util.*
 
 
 // TODO find a way to not always add these to Dao since they bloat it
@@ -59,9 +47,9 @@ private val EXTRA_DATA_TYPES =
         Date::class,
         OffsetDateTime::class,
 //        JSONObject::class,
-//        JsonElement::class,
+//        com.google.gson.JsonElement::class,
 //        JsonNode::class,
-//        JsonObject::class,
+//        kotlinx.serialization.json.JsonObject::class,
     )
 
 private val EXTRA_EXCEPTION_TYPES =

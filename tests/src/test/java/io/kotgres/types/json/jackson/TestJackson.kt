@@ -9,8 +9,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 
-
-
 class TestJackson : KotgresTest() {
 
     private val dao by lazy { JsonAsJacksonDao(kotgresConnectionPool) }

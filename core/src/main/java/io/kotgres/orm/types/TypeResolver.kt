@@ -50,10 +50,10 @@ private val BUILT_IN_MAPPERS = mutableListOf(
     EnumMapper::class,
     StringEnumMapper::class,
     // json
-    JsonJavaMapper::class,
-    GuavaMapper::class,
-    JacksonMapper::class,
-    KotlinxSerializationMapper::class,
+//    JsonJavaMapper::class,
+//    GuavaMapper::class,
+//    JacksonMapper::class,
+//    KotlinxSerializationMapper::class,
 )
 
 class TypeResolver private constructor() {
