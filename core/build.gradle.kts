@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "io.kotgres"
-version = "0.1.3"
+version = "0.1.4"
 
 repositories {
     mavenCentral()
@@ -60,7 +60,7 @@ afterEvaluate {
 
                 groupId = "io.kotgres"
                 artifactId = "kotgres"
-                version = "0.1.3"
+                version = "0.1.4"
             }
         }
     }
