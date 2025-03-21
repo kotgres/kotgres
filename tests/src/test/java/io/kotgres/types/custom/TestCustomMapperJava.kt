@@ -3,6 +3,7 @@ package io.kotgres.types.custom
 import io.kotgres.orm.dao.PrimaryKeyDao
 import io.kotgres.orm.manager.DaoManager
 import io.kotgres.types.custom.classes.UserWithWrappedInt
+import io.kotgres.types.custom.classes.UserWithWrappedIntJava
 import io.kotgres.types.custom.classes.WrappedInt
 import io.kotgres.utils.KotgresTest
 import io.kotgres.utils.randomNumber
@@ -13,11 +14,18 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 
-class TestCustomMapper : KotgresTest() {
+class TestCustomMapperJava : KotgresTest() {
 
     private val dao: PrimaryKeyDao<UserWithWrappedInt, Int> by lazy {
         DaoManager.getPrimaryKeyDao(
             UserWithWrappedInt::class,
+            kotgresConnectionPool
+        )
+    }
+
+    private val daoJava: PrimaryKeyDao<UserWithWrappedIntJava, Int> by lazy {
+        DaoManager.getPrimaryKeyDao(
+            UserWithWrappedIntJava::class,
             kotgresConnectionPool
         )
     }
@@ -97,5 +105,32 @@ class TestCustomMapper : KotgresTest() {
         val entityAfterDelete = dao.getByPrimaryKey(entityToUpdated.id!!)
         assertNull(entityAfterDelete)
     }
+
+    @Test
+    fun `when using a java custom mapper, insert, get, update and delete works for not null field`() {
+        val initialAge = randomNumber(100_000_000)
+        val updatedAge = randomNumber(100_000_000)
+        val newEntity = UserWithWrappedIntJava(
+            id = -1,
+            age = WrappedInt(initialAge),
+            dateCreated = LocalDateTime.now(),
+            name = randomString(),
+        )
+        val insertedEntity = daoJava.insert(newEntity)
+        assertEquals(initialAge, insertedEntity.age!!.int)
+
+        val entityToUpdated = insertedEntity.copy(age = WrappedInt(updatedAge))
+        val updatedEntity = daoJava.update(entityToUpdated)!!
+        assertEquals(updatedAge, updatedEntity.age!!.int)
+
+        val entityAfterUpdate = daoJava.getByPrimaryKey(entityToUpdated.id!!)
+        assertEquals(updatedAge, entityAfterUpdate!!.age!!.int)
+
+        daoJava.deleteById(entityAfterUpdate.id!!)
+
+        val entityAfterDelete = daoJava.getByPrimaryKey(entityToUpdated.id!!)
+        assertNull(entityAfterDelete)
+    }
+
 
 }

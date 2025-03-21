@@ -26,7 +26,7 @@ import io.kotgres.orm.annotations.Generated
 import io.kotgres.orm.annotations.PrimaryKey
 import io.kotgres.orm.annotations.Table
 import io.kotgres.orm.annotations.Unique
-import io.kotgres.orm.annotations.UseCustomMapper
+import io.kotgres.orm.annotations.CustomMapper
 import io.kotgres.orm.exceptions.entity.KotgresPrimaryKeyException
 import io.kotgres.orm.exceptions.internal.KotgresInternalException
 import io.kotgres.orm.internal.builders.DaoBuilder
@@ -149,7 +149,7 @@ internal class TableProcessor(
         ): MapperInfo {
             val res = prop.annotations
                 .firstOrNull {
-                    it.annotationType.resolve().toClassName() == UseCustomMapper::class.asClassName()
+                    it.annotationType.resolve().toClassName() == CustomMapper::class.asClassName()
                 }
                 ?.arguments
                 ?.first()

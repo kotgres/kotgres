@@ -8,9 +8,10 @@ import kotlin.reflect.KClass
 
 /**
  * @param tClass: class that is mapped to
- * @param nullable: whether mapper allows null values or not
  */
-abstract class CustomMapper<T>(tClass: KClass<*>?) : AbstractMapper<T>(tClass, true) {
+abstract class CustomMapper<T> : AbstractMapper<T> {
+    constructor(tClass: KClass<*>?) : super(tClass, true)
+    constructor(tClassJava: Class<*>?) : super(tClassJava?.kotlin, true)
 
     abstract fun fromSql(string: String): T?
     abstract fun toSql(value: T): String?
@@ -24,5 +25,4 @@ abstract class CustomMapper<T>(tClass: KClass<*>?) : AbstractMapper<T>(tClass, t
     override fun toSql(value: T, preparedStatement: PreparedStatement, position: Int, conn: Connection) {
         preparedStatement.setObject(position, toSql(value), Types.OTHER)
     }
-
 }
