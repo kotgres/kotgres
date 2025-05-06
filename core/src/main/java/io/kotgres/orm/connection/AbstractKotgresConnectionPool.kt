@@ -60,5 +60,13 @@ abstract class AbstractKotgresConnectionPool : AutoCloseable {
         return KotgresConnectionUtils.runSelectQueryReturningList(query, KotgresConnectionUtils::get, this::getConnection)
     }
 
+    /**
+     * Returns a single element for a query that returns only one column
+     * Only supports types that are natively supported by JDBC
+     * Non-exhaustive list: String, Boolean, Int, Double, Long, Date, LocalDateTime, ...
+     */
+    fun runSelectQueryReturningMap(query: String): Map<String, String>? {
+        return KotgresConnectionUtils.runSelectQueryReturningMap(query, this::getConnection)
+    }
 
 }

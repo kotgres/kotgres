@@ -42,6 +42,7 @@ object KotgresConnectionUtils {
             }
         }
     }
+
     @Deprecated("Do not use, only public because it's needed for inline functions. Use KotgresConnectionPool.runSelectQueryReturningList")
     fun <T : Any> runSelectQueryReturningList(
         string: String, processRow: (ResultSet) -> T,
@@ -71,6 +72,41 @@ object KotgresConnectionUtils {
     @Deprecated("Do not use, only public because it's needed for inline functions")
     inline fun <reified T> get(resultSet: ResultSet): T {
         return resultSet.getObject(1, T::class.java)
+    }
+
+    fun runSelectQueryReturningMap(
+        query: String,
+        getConnection: () -> Connection
+    ): Map<String, String>? {
+        getConnection().use { conn ->
+            val st = conn.createStatement()
+            st.use {
+                val resultSet = try {
+                    it.executeQuery(query)
+                } catch (e: PSQLException) {
+                    throw QueryUtils.handleSelectQueryExceptions(e)
+                }
+
+                if (!resultSet.next()) {
+                    return null
+                }
+
+                val metadata = resultSet.metaData
+                val columnCount = metadata.columnCount
+
+                val result = (1..columnCount).associate { columnIndex ->
+                    val columnName = metadata.getColumnName(columnIndex)
+                    columnName to resultSet.getObject(columnIndex).toString()
+                }
+
+                val hasMoreResults = resultSet.next()
+                if (hasMoreResults) {
+                    throw KotgresTooManyRowsReturnedException()
+                }
+
+                return result
+            }
+        }
     }
 
 
