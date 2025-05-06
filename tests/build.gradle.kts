@@ -15,7 +15,7 @@ repositories {
 dependencies {
     // kotgres
     implementation(project(":core"))
-    kspTest(project(":core"))
+    ksp(project(":core"))
     // kotgres dsl
     implementation("com.github.kotgres:kotgres-dsl:v0.1.2")
     // postgres driver

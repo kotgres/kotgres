@@ -1,7 +1,7 @@
 package io.kotgres.types.json.kotlinxserialization
 
-import io.kotgres.orm.dao.JsonAsKotlinxDao
-import io.kotgres.orm.dao.JsonBinaryAsKotlinxDao
+import io.kotgres.orm.generated.dao.JsonAsKotlinxDao
+import io.kotgres.orm.generated.dao.JsonBinaryAsKotlinxDao
 import io.kotgres.utils.KotgresTest
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject

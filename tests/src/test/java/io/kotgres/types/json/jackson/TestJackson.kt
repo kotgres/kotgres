@@ -1,8 +1,8 @@
 package io.kotgres.types.json.jackson
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.kotgres.orm.dao.JsonAsJacksonDao
-import io.kotgres.orm.dao.JsonBinaryAsJacksonDao
+import io.kotgres.orm.generated.dao.JsonAsJacksonDao
+import io.kotgres.orm.generated.dao.JsonBinaryAsJacksonDao
 import io.kotgres.utils.KotgresTest
 import org.junit.jupiter.api.Nested
 import kotlin.test.Test

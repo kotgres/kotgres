@@ -1,7 +1,7 @@
 package io.kotgres.dao.primarykey.classformat
 
 import io.kotgres.dao.primarykey.classformat.classes.UserWithNormalClass
-import io.kotgres.orm.dao.UserWithNormalClassDao
+import io.kotgres.orm.generated.dao.UserWithNormalClassDao
 import io.kotgres.utils.KotgresTest
 import java.time.LocalDateTime
 import kotlin.test.Test

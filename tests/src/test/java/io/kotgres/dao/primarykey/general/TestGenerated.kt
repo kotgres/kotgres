@@ -2,7 +2,7 @@ package io.kotgres.dao.primarykey.general
 
 import io.kotgres.classes.user.UserWithIdAlwaysGenerated
 import io.kotgres.dsl.insertInto
-import io.kotgres.orm.dao.UserWithIdAlwaysGeneratedDao
+import io.kotgres.orm.generated.dao.UserWithIdAlwaysGeneratedDao
 import io.kotgres.orm.exceptions.query.KotgresCannotInsertToGeneratedAlwaysException
 import io.kotgres.utils.KotgresTest
 import io.kotgres.utils.randomNumber

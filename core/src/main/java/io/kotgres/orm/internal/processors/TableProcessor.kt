@@ -2,31 +2,15 @@ package io.kotgres.orm.internal.processors
 
 import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.getAnnotationsByType
-import com.google.devtools.ksp.processing.CodeGenerator
-import com.google.devtools.ksp.processing.KSPLogger
-import com.google.devtools.ksp.processing.Resolver
-import com.google.devtools.ksp.processing.SymbolProcessor
-import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
-import com.google.devtools.ksp.processing.SymbolProcessorProvider
-import com.google.devtools.ksp.symbol.ClassKind
-import com.google.devtools.ksp.symbol.KSAnnotated
-import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.symbol.KSPropertyDeclaration
-import com.google.devtools.ksp.symbol.KSType
-import com.google.devtools.ksp.symbol.KSVisitorVoid
-import com.google.devtools.ksp.symbol.Nullability
+import com.google.devtools.ksp.processing.*
+import com.google.devtools.ksp.symbol.*
 import com.google.devtools.ksp.validate
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.writeTo
-import io.kotgres.orm.annotations.Column
+import io.kotgres.orm.annotations.*
 import io.kotgres.orm.annotations.Enum
-import io.kotgres.orm.annotations.Generated
-import io.kotgres.orm.annotations.PrimaryKey
-import io.kotgres.orm.annotations.Table
-import io.kotgres.orm.annotations.Unique
-import io.kotgres.orm.annotations.CustomMapper
 import io.kotgres.orm.exceptions.entity.KotgresPrimaryKeyException
 import io.kotgres.orm.exceptions.internal.KotgresInternalException
 import io.kotgres.orm.internal.builders.DaoBuilder
@@ -46,9 +30,16 @@ internal class TableProcessor(
     private val typeResolver = TypeResolver.getSingleton()
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        val symbols = resolver.getSymbolsWithAnnotation(Table::class.qualifiedName.toString())
+        val allFiles = resolver.getAllFiles()
+        val isTest = allFiles.any { it.filePath.contains("/test/") }
 
-        val ret = symbols.filter { !it.validate() }.toList()
+        logger.warn("Running DaoProcessor in ${if (isTest) "TEST" else "MAIN"} context")
+
+        if (!resolver.getSymbolsWithAnnotation(Table::class.qualifiedName.toString(), inDepth = true).iterator().hasNext()) {
+            return emptyList() // wait until symbols are available
+        }
+
+        val symbols = resolver.getSymbolsWithAnnotation(Table::class.qualifiedName.toString(), true)
 
         symbols
             .filter { it is KSClassDeclaration && it.validate() }
@@ -56,10 +47,10 @@ internal class TableProcessor(
                 it.accept(TableProcessirVisitor(), Unit)
             }
 
-        // Also create DaoManager
-        DaoManagerBuilder(codeGenerator, logger).build()
+        // Create DaoManager
+        DaoManagerBuilder(codeGenerator, logger).build(resolver)
 
-        return ret
+        return emptyList()
     }
 
     inner class TableProcessirVisitor : KSVisitorVoid() {
@@ -75,7 +66,7 @@ internal class TableProcessor(
 
             fileSpec.writeTo(
                 codeGenerator = codeGenerator,
-                aggregating = true,
+                aggregating = false,
                 originatingKSFiles = mutableListOf(classDeclaration.containingFile!!)
             )
         }

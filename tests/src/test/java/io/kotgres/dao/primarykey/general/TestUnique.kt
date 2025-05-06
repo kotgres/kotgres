@@ -1,7 +1,7 @@
 package io.kotgres.dao.primarykey.general
 
 import io.kotgres.classes.country.CountryWithUnique
-import io.kotgres.orm.dao.CountryWithUniqueDao
+import io.kotgres.orm.generated.dao.CountryWithUniqueDao
 import io.kotgres.utils.KotgresTest
 import io.kotgres.utils.randomString
 import java.time.LocalDateTime

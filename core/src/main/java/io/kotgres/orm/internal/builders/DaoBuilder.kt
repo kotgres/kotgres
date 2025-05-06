@@ -25,10 +25,7 @@ import io.kotgres.orm.internal.processors.model.BuilderConstants.INDENTATION
 import io.kotgres.orm.internal.processors.model.EntityInfo
 import io.kotgres.orm.internal.processors.model.MapperInfo
 import io.kotgres.orm.internal.processors.model.PropertyInfo
-import io.kotgres.orm.internal.utils.BuilderUtils
-import io.kotgres.orm.internal.utils.DaoInfo
-import io.kotgres.orm.internal.utils.Debug
-import io.kotgres.orm.internal.utils.toSnakeCase
+import io.kotgres.orm.internal.utils.*
 import io.kotgres.orm.types.TypeResolver
 import io.kotgres.orm.types.base.CustomMapper
 import java.lang.reflect.Constructor
@@ -75,20 +72,16 @@ internal class DaoBuilder(
             logger.warn("Building DAO for $entityName")
         }
 
-        if (primaryKeyInfo != null) {
-            DaoInfo.createPkeyDaos.add(packageName to daoClassName)
-            DaoInfo.createPkeyDaosOriginatingKSFiles.add(containingFile)
-        } else {
-            DaoInfo.createNoPkeyDaos.add(packageName to daoClassName)
-            DaoInfo.createNoPkeyDaosOriginatingKSFiles.add(containingFile)
-        }
+        // Save it for use in DaoManagerBuilder
+        val isPrimaryKey = primaryKeyInfo != null
+        GeneratedDaoInfoHolder.allDaos.add(DaoInfo(packageName, daoClassName, containingFile, isPrimaryKey))
 
         val innerClass = buildClass(
             daoClassName,
             entityName,
         )
 
-        val builder = FileSpec.builder("io.kotgres.orm.dao", daoClassName)
+        val builder = FileSpec.builder("io.kotgres.orm.generated.dao", daoClassName)
 
         builder.indent(INDENTATION).addType(innerClass)
 

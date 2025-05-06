@@ -1,7 +1,7 @@
 package io.kotgres.types.json.jsonjava
 
-import io.kotgres.orm.dao.JsonAsJavaJsonDao
-import io.kotgres.orm.dao.JsonBinaryAsJavaJsonDao
+import io.kotgres.orm.generated.dao.JsonAsJavaJsonDao
+import io.kotgres.orm.generated.dao.JsonBinaryAsJavaJsonDao
 import io.kotgres.utils.KotgresTest
 import org.json.JSONObject
 import org.junit.jupiter.api.Nested

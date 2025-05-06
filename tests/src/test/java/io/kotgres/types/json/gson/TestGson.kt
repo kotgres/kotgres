@@ -1,8 +1,8 @@
 package io.kotgres.types.json.gson
 
 import com.google.gson.JsonParser
-import io.kotgres.orm.dao.JsonAsGsonDao
-import io.kotgres.orm.dao.JsonBinaryAsGsonDao
+import io.kotgres.orm.generated.dao.JsonAsGsonDao
+import io.kotgres.orm.generated.dao.JsonBinaryAsGsonDao
 import io.kotgres.utils.KotgresTest
 import org.junit.jupiter.api.Nested
 import kotlin.test.Test

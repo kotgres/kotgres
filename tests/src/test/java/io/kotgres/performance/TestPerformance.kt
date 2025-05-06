@@ -3,7 +3,7 @@ package io.kotgres.performance
 import io.kotgres.classes.user.UserWithId
 import io.kotgres.createTestKotgresConnection
 import io.kotgres.orm.connection.AbstractKotgresConnectionPool
-import io.kotgres.orm.dao.UserWithIdDao
+import io.kotgres.orm.generated.dao.UserWithIdDao
 import io.kotgres.utils.randomNumber
 import io.kotgres.utils.randomString
 import org.junit.jupiter.api.AfterAll

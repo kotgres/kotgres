@@ -1,9 +1,9 @@
 package io.kotgres.types.timestamptz
 
 import io.kotgres.dsl.operators.lessEq
-import io.kotgres.orm.dao.TableWithTimestamptzAsDateDao
-import io.kotgres.orm.dao.TableWithTimestamptzAsLocalDateTimeDao
-import io.kotgres.orm.dao.TableWithTimestamptzAsOffsetDateTimeDao
+import io.kotgres.orm.generated.dao.TableWithTimestamptzAsDateDao
+import io.kotgres.orm.generated.dao.TableWithTimestamptzAsLocalDateTimeDao
+import io.kotgres.orm.generated.dao.TableWithTimestamptzAsOffsetDateTimeDao
 import io.kotgres.orm.exceptions.entity.KotgresEntityDefinitionException
 import io.kotgres.types.timestamp.utils.toDate
 import io.kotgres.types.timestamptz.classes.TableWithTimestamptzAsDate

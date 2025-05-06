@@ -1,6 +1,6 @@
 package io.kotgres.types.uuid
 
-import io.kotgres.orm.dao.UserWithGeneratedUUIDDao
+import io.kotgres.orm.generated.dao.UserWithGeneratedUUIDDao
 import io.kotgres.types.uuid.classes.UserWithGeneratedUUID
 import io.kotgres.utils.KotgresTest
 import java.util.UUID
