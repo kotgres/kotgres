@@ -148,9 +148,27 @@ abstract class AbstractDao<E>(val pool: AbstractKotgresConnectionPool) {
         }
     }
 
-    fun getByUniqueColumnList(columnName: String, valueList: List<Any?>, trx: KotgresTransaction? = null): List<E> {
+    fun getByUniqueColumnValueList(columnName: String, valueList: List<Any?>, trx: KotgresTransaction? = null): List<E> {
         if (valueList.isEmpty()) return emptyList()
 
+
+        val query = select("*")
+            .from(tableName)
+            .where(columnName eqAny "?".raw)
+
+        return runSelect(query, listOf(valueList), trx)
+    }
+
+    fun getByColumn(columnName: String, value: Any?, trx: KotgresTransaction? = null): List<E> {
+        val query = select("*")
+            .from(tableName)
+            .where(columnName eq "?".raw)
+
+        return runSelect(query, listOf(value), trx)
+    }
+
+    fun getByColumnValueList(columnName: String, valueList: List<Any?>, trx: KotgresTransaction? = null): List<E> {
+        if (valueList.isEmpty()) return emptyList()
 
         val query = select("*")
             .from(tableName)

@@ -12,11 +12,7 @@ import io.kotgres.utils.randomString
 import org.junit.jupiter.api.assertThrows
 import org.postgresql.util.PSQLException
 import java.time.LocalDateTime
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 
 class TestBasicPkey : KotgresTest() {
@@ -90,7 +86,7 @@ class TestBasicPkey : KotgresTest() {
         val user2 = UserWithId(-1, "david", 12, LocalDateTime.now())
         val dbUser2 = userDao.insert(user2)
 
-        val users = userDao.getByPrimaryKeyList(listOf(dbUser1.id, dbUser2.id))
+        val users = userDao.getByPrimaryKeyValueList(listOf(dbUser1.id, dbUser2.id))
         assertEquals(users.size, 2)
         assertNotNull(users.find { it.id == dbUser1.id })
         assertNotNull(users.find { it.id == dbUser2.id })
@@ -282,5 +278,21 @@ class TestBasicPkey : KotgresTest() {
             userWithIdAlwaysGeneratedIncorrectNullDao.insert(entity)
         }
         assertTrue(error.message!!.contains("ERROR: null value in column \"name\" of relation \"users_with_id_always_generated\" violates not-null constraint"))
+    }
+
+    @Test
+    fun `can filter using getByColumn`() {
+        val country = getRandomCountry()
+        countryDao.insertListReturningId(listOf(country))
+        val results = countryDao.getByColumn("code", country.code)
+        assertEquals(1, results.size)
+    }
+
+    @Test
+    fun `can filter using getByColumnList`() {
+        val country = getRandomCountry()
+        countryDao.insertListReturningId(listOf(country))
+        val results = countryDao.getByColumnValueList("code", listOf(country.code))
+        assertEquals(1, results.size)
     }
 }

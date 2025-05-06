@@ -71,8 +71,8 @@ abstract class PrimaryKeyDao<E : Any, I : Any>(conn: AbstractKotgresConnectionPo
         return getByUniqueColumn(primaryKeyFieldInfo.columnName, value, trx)
     }
 
-    fun getByPrimaryKeyList(valueList: List<I>, trx: KotgresTransaction? = null): List<E> {
-        return getByUniqueColumnList(primaryKeyFieldInfo.columnName, valueList, trx)
+    fun getByPrimaryKeyValueList(valueList: List<I>, trx: KotgresTransaction? = null): List<E> {
+        return getByUniqueColumnValueList(primaryKeyFieldInfo.columnName, valueList, trx)
     }
 
     /**
