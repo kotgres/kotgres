@@ -187,7 +187,7 @@ fun main() {
         """.trimIndent()
     )
 
-    val userDao: PrimaryKeyDao<User, Int> = DaoManager.getPrimaryKeyDao(User::class.java, connectionPool)
+    val userDao: PrimaryKeyDao<User, Int> = DaoManager.getPrimaryKeyDao(connectionPool)
 
     val insertedUser =
         userDao.insert(User(-1, "kotgres", "kotgres@kotgres.io", 42, null, LocalDateTime.now(), LocalDateTime.now()))
