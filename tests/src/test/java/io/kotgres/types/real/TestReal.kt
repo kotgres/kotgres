@@ -14,10 +14,10 @@ const val TYPE_REAL_TEST_TABLE = "table_with_real"
 class TestReal : KotgresTest() {
 
     private val realAsFloatDao: PrimaryKeyDao<RealAsFloat, Int> by lazy {
-        DaoManager.getPrimaryKeyDao(RealAsFloat::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
     private val realAsIntDao: PrimaryKeyDao<RealAsInt, Int> by lazy {
-        DaoManager.getPrimaryKeyDao(RealAsInt::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
 
     @Test

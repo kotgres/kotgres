@@ -13,7 +13,7 @@ import kotlin.test.assertEquals
 class TestLateInit : KotgresTest() {
 
     private val userDao: PrimaryKeyDao<UserWithIdLateInitId, Int> by lazy {
-        DaoManager.getPrimaryKeyDao(UserWithIdLateInitId::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
 
 //    @Test

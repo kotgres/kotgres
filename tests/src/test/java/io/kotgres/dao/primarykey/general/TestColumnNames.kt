@@ -13,7 +13,7 @@ const val TEST_COLUMN_NAMES_TABLE_NAME = "column_with_changed_name"
 class TestColumnNames : KotgresTest() {
 
     private val columnWithChangedNameDao: PrimaryKeyDao<ColumnWithChangedName, Int> by lazy {
-        DaoManager.getPrimaryKeyDao(ColumnWithChangedName::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
 
     @Test

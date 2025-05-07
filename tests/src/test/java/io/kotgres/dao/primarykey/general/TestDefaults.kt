@@ -9,18 +9,14 @@ import io.kotgres.orm.manager.DaoManager
 import io.kotgres.utils.KotgresTest
 import io.kotgres.utils.randomString
 import java.time.LocalDateTime
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 class TestDefaults : KotgresTest() {
 
     @Test
     fun `when no generated annotation, default is null and can update`() {
         val userDao: PrimaryKeyDao<UserWithDefaultDateUpdated, Int> =
-            DaoManager.getPrimaryKeyDao(UserWithDefaultDateUpdated::class, kotgresConnectionPool)
+            DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
 
         val randomName = randomString()
         val userToInsert = UserWithDefaultDateUpdated(-1, 1, randomName, null)
@@ -37,7 +33,7 @@ class TestDefaults : KotgresTest() {
     @Test
     fun `when generated annotation, default is null and can update`() {
         val userDao: PrimaryKeyDao<UserWithDefaultDateUpdatedGenerated1970, Int> =
-            DaoManager.getPrimaryKeyDao(UserWithDefaultDateUpdatedGenerated1970::class, kotgresConnectionPool)
+            DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
 
         val randomName = randomString()
         val user = UserWithDefaultDateUpdatedGenerated1970(-1, 1, randomName, null)
@@ -59,7 +55,7 @@ class TestDefaults : KotgresTest() {
     @Test
     fun `default now works as expected`() {
         val userDao: PrimaryKeyDao<UserWithDefaultDateUpdatedGeneratedNow, Int> =
-            DaoManager.getPrimaryKeyDao(UserWithDefaultDateUpdatedGeneratedNow::class, kotgresConnectionPool)
+            DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
 
         val randomName = randomString()
         val user = UserWithDefaultDateUpdatedGeneratedNow(-1, 1, randomName, null)
@@ -78,7 +74,7 @@ class TestDefaults : KotgresTest() {
     @Test
     fun `non updateable does not allow to updated`() {
         val userDao: PrimaryKeyDao<UserWithDefaultDateUpdatedNonUpdateable, Int> =
-            DaoManager.getPrimaryKeyDao(UserWithDefaultDateUpdatedNonUpdateable::class, kotgresConnectionPool)
+            DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
 
 //        val timestampZeroPostgres = LocalDateTime.of(1970, 1, 1, 1, 0, 0)
 

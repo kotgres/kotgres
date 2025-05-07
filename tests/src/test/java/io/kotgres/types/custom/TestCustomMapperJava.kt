@@ -18,14 +18,12 @@ class TestCustomMapperJava : KotgresTest() {
 
     private val dao: PrimaryKeyDao<UserWithWrappedInt, Int> by lazy {
         DaoManager.getPrimaryKeyDao(
-            UserWithWrappedInt::class,
             kotgresConnectionPool
         )
     }
 
     private val daoJava: PrimaryKeyDao<UserWithWrappedIntJava, Int> by lazy {
         DaoManager.getPrimaryKeyDao(
-            UserWithWrappedIntJava::class,
             kotgresConnectionPool
         )
     }

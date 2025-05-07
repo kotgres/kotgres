@@ -22,7 +22,7 @@ import kotlin.test.assertTrue
 class TestBasicNoPkey : KotgresTest() {
 
     private val userDao: NoPrimaryKeyDao<User> by lazy {
-        DaoManager.getNoPrimaryKeyDao(User::class, kotgresConnectionPool)
+        DaoManager.getNoPrimaryKeyDao(kotgresConnectionPool)
     }
 
     @Test

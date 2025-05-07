@@ -69,7 +69,7 @@ internal class DaoBuilder(
         val daoClassName = BuilderUtils.entityNameToDaoName(entityName)
 
         if (Debug.ENABLED) {
-            logger.warn("Building DAO for $entityName")
+            logger.info("Building DAO for $entityName")
         }
 
         // Save it for use in DaoManagerBuilder
@@ -132,15 +132,15 @@ internal class DaoBuilder(
         tableName: String,
     ) {
         logger.logging("")
-        logger.warn("CREATE TABLE $tableName")
+        logger.logging("CREATE TABLE $tableName")
         fieldsInfo.forEach {
-            logger.warn(
+            logger.logging(
                 "${it.columnName}: ${it.postgresType} (isPrimaryKey: ${it.isPrimaryKey}, " +
                         "isGenerated: ${it.isGenerated}, isUnique: ${it.isUnique}, hasEnumAnnotation: ${it.hasEnumAnnotation}, " +
                         "isEnumType: ${it.isEnumType}, isNullable: ${it.isNullable})",
             )
         }
-        logger.warn("")
+        logger.logging("")
     }
 
     private fun buildMapResultFunction(): FunSpec {

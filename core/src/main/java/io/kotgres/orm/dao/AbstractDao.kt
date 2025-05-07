@@ -487,7 +487,7 @@ abstract class AbstractDao<E>(val pool: AbstractKotgresConnectionPool) {
             .toList()
     }
 
-    @Deprecated("use buildBindingWithMapperListForInsert")
+    @Deprecated("Use buildBindingWithMapperListForInsert")
     protected fun buildBindingsForInsertArray(entity: E): Array<ValueWithMapper> {
         return insertFields.entries
             .map { (columnName, fieldInfo) ->

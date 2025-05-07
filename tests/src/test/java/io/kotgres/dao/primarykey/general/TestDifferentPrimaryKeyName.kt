@@ -16,7 +16,6 @@ class TestDifferentPrimaryKeyName : KotgresTest() {
 
     private val primaryKeyWithDifferentNameDao: PrimaryKeyDao<PrimaryKeyWithDifferentName, Int> by lazy {
         DaoManager.getPrimaryKeyDao(
-            PrimaryKeyWithDifferentName::class.java,
             kotgresConnectionPool
         )
     }

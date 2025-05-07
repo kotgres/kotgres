@@ -14,7 +14,7 @@ import kotlin.test.assertTrue
 class TestBindingsInRawQueries : KotgresTest() {
 
     private val userDao: NoPrimaryKeyDao<User> by lazy {
-        DaoManager.getNoPrimaryKeyDao(User::class.java, kotgresConnectionPool)
+        DaoManager.getNoPrimaryKeyDao(kotgresConnectionPool)
     }
 
     @Test

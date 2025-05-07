@@ -33,7 +33,7 @@ internal class TableProcessor(
         val allFiles = resolver.getAllFiles()
         val isTest = allFiles.any { it.filePath.contains("/test/") }
 
-        logger.warn("Running DaoProcessor in ${if (isTest) "TEST" else "MAIN"} context")
+        logger.info("Running TableProcessor in ${if (isTest) "test" else "main"} context")
 
         if (!resolver.getSymbolsWithAnnotation(Table::class.qualifiedName.toString(), inDepth = true).iterator().hasNext()) {
             return emptyList() // wait until symbols are available

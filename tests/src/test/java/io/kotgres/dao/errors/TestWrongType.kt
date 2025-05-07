@@ -14,7 +14,7 @@ import kotlin.test.assertEquals
 class TestWrongType : KotgresTest() {
 
     private val userDao: NoPrimaryKeyDao<UserWithWrongAgeType> by lazy {
-        DaoManager.getNoPrimaryKeyDao(UserWithWrongAgeType::class, kotgresConnectionPool)
+        DaoManager.getNoPrimaryKeyDao(kotgresConnectionPool)
     }
 
     @Test

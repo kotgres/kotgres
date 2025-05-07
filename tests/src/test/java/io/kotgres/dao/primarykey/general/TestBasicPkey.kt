@@ -18,14 +18,14 @@ import kotlin.test.*
 class TestBasicPkey : KotgresTest() {
 
     private val countryDao: PrimaryKeyDao<Country, String> by lazy {
-        DaoManager.getPrimaryKeyDao(Country::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
     private val userDao: PrimaryKeyDao<UserWithId, Int> by lazy {
-        DaoManager.getPrimaryKeyDao(UserWithId::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
 
     private val userWithIdAlwaysGeneratedIncorrectNullDao: PrimaryKeyDao<UserWithIdAlwaysGeneratedIncorrectNull, Int> by lazy {
-        DaoManager.getPrimaryKeyDao(UserWithIdAlwaysGeneratedIncorrectNull::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
 
     @Test

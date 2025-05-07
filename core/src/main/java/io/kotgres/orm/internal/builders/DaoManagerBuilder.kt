@@ -20,7 +20,6 @@ import io.kotgres.orm.internal.processors.model.BuilderConstants
 import io.kotgres.orm.internal.utils.BuilderUtils
 import io.kotgres.orm.internal.utils.DaoInfo
 import io.kotgres.orm.internal.utils.GeneratedDaoInfoHolder
-import kotlin.reflect.KClass
 
 private const val name = "DaoManager"
 
@@ -40,10 +39,9 @@ internal class DaoManagerBuilder(
     private val templateTypeEntity = TypeVariableName.Companion.invoke("E", Any::class.asClassName())
     private val templateTypeEntityPrimaryKey = TypeVariableName.Companion.invoke("I", Any::class.asClassName())
 
-    @OptIn(KspExperimental::class)
     fun build(resolver: Resolver) {
         val isTest = resolver.getAllFiles().any { it.filePath.contains("/test/") }
-        logger.warn("Building DaoManager for ${if (isTest) "test" else "main"}")
+        logger.info("Building DaoManagerBuilder for ${if (isTest) "test" else "main"}")
 
 // TODO add map to optimise
 //        val propBuilder = PropertySpec.builder(
@@ -67,20 +65,21 @@ internal class DaoManagerBuilder(
 
         val generateDaoInfosFromOtherSourceSets = getGeneratedDaosFromOtherSourceSets(resolver)
 
-        val allDaos =  (GeneratedDaoInfoHolder.allDaos + generateDaoInfosFromOtherSourceSets)
+        val allDaos = (GeneratedDaoInfoHolder.allDaos + generateDaoInfosFromOtherSourceSets)
 
         val primaryKeyDaos = allDaos.filter { it.isPrimaryKey }
         val nonPrimaryKeyDaos = allDaos.filter { !it.isPrimaryKey }
 
+        // primary key functions
         val pkByStringFunction = getPkDaoByStringFunction(primaryKeyDaos)
-        val pkByKclassFunctionKotlin = getPkDaoByKclassFunctionKotlin()
-        val pkByKclassFunctionJava = getPkDaoByKclassFunctionJava()
-
-        val noPkByStringFunction = getNoPkDaoByStringFunction(nonPrimaryKeyDaos)
-        val noPkByKclassFunctionKotlin = getNoPkDaoByKclassFunctionKotlin()
-        val noPkByKclassFunctionJava = getNoPkDaoByKclassFunctionJava()
-
+        val pkFunctionKotlin = getPkDaoFunctionKotlin()
+        val pkFunctionJava = getPkFunctionJava()
         val allPrimaryKeyDaosProp = getAllPrimaryKeyDaosProp(primaryKeyDaos)
+
+        // no primary key functions
+        val noPkByStringFunction = getNoPkDaoByStringFunction(nonPrimaryKeyDaos)
+        val noFunctionKotlin = getNoPkDaosFunctionKotlin()
+        val noFunctionJava = getNoPkDaoFunctionJava()
         val allNoPrimaryKeyDaosProp = getAllNoPrimaryKeyDaosProp(nonPrimaryKeyDaos)
 
         buildFile(
@@ -88,11 +87,11 @@ internal class DaoManagerBuilder(
             allPrimaryKeyDaosProp,
             allNoPrimaryKeyDaosProp,
             pkByStringFunction,
-            pkByKclassFunctionKotlin,
-            pkByKclassFunctionJava,
+            pkFunctionKotlin,
+            pkFunctionJava,
             noPkByStringFunction,
-            noPkByKclassFunctionKotlin,
-            noPkByKclassFunctionJava
+            noFunctionKotlin,
+            noFunctionJava
         )
 
         return
@@ -107,7 +106,7 @@ internal class DaoManagerBuilder(
                 .distinctBy { it.qualifiedName?.asString() }
                 .toList()
 
-        logger.warn("Found ${generatedDaos.size} generated valid daos")
+        logger.info("Found ${generatedDaos.size} generated valid daos")
 
         val generateDaoInfos = generatedDaos.map { declaration ->
             val isNonPrimaryKey = declaration.superTypes
@@ -123,7 +122,7 @@ internal class DaoManagerBuilder(
             )
         }
 
-        logger.warn("Found Generated Daos: ${generateDaoInfos.size}")
+        logger.info("Found Generated Daos: ${generateDaoInfos.size}")
         return generateDaoInfos
     }
 
@@ -152,7 +151,7 @@ internal class DaoManagerBuilder(
         val fileBuilder = FileSpec.builder("io.kotgres.orm.manager", name)
         fileBuilder.addType(objectBuilder.build())
 
-        allDaos.forEach { (packageName, className) ->
+        allDaos.forEach { (_, className) ->
             fileBuilder.addImport("io.kotgres.orm.generated.dao", className)
         }
 
@@ -160,7 +159,7 @@ internal class DaoManagerBuilder(
             fileBuilder.addImport(it.qualifiedName!!, "")
         }
 
-        logger.warn("Building DaoManager file " + allDaos.size + " DAOs")
+        logger.info("Building DaoManager file " + allDaos.size + " DAOs")
 
         val dependencies = Dependencies(
             aggregating = true,
@@ -178,8 +177,8 @@ internal class DaoManagerBuilder(
 
     }
 
-    private fun getPkDaoByKclassFunctionJava(): FunSpec {
-        return FunSpec.builder("getPrimaryKeyDao")
+    private fun getPkFunctionJava(): FunSpec {
+        return FunSpec.builder("getPrimaryKeyDaoJava")
             .addModifiers(KModifier.PUBLIC)
             .addTypeVariable(templateTypeEntity)
             .addTypeVariable(templateTypeEntityPrimaryKey)
@@ -199,8 +198,8 @@ internal class DaoManagerBuilder(
             .build()
     }
 
-    private fun getNoPkDaoByKclassFunctionJava(): FunSpec {
-        return FunSpec.builder("getNoPrimaryKeyDao")
+    private fun getNoPkDaoFunctionJava(): FunSpec {
+        return FunSpec.builder("getNoPrimaryKeyDaoJava")
             .addModifiers(KModifier.PUBLIC)
             .addTypeVariable(templateTypeEntity)
             .addParameter("javaClass", Class::class.asTypeName().parameterizedBy(templateTypeEntity))
@@ -219,12 +218,11 @@ internal class DaoManagerBuilder(
             .build()
     }
 
-    private fun getPkDaoByKclassFunctionKotlin(): FunSpec {
+    private fun getPkDaoFunctionKotlin(): FunSpec {
         return FunSpec.builder("getPrimaryKeyDao")
-            .addModifiers(KModifier.PUBLIC)
-            .addTypeVariable(templateTypeEntity)
-            .addTypeVariable(templateTypeEntityPrimaryKey)
-            .addParameter("klass", KClass::class.asTypeName().parameterizedBy(templateTypeEntity))
+            .addModifiers(KModifier.INLINE)
+            .addTypeVariable(templateTypeEntity.copy(reified = true))
+            .addTypeVariable(templateTypeEntityPrimaryKey.copy(reified = true))
             .addParameter(
                 ParameterSpec.Companion.builder("conn", AbstractKotgresConnectionPool::class.asClassName()).build()
             )
@@ -233,18 +231,18 @@ internal class DaoManagerBuilder(
             )
             .addCode(
                 """
-            val name = klass.simpleName ?: throw KotgresClassHasNoNameException("kotlin")
+            val name = E::class.simpleName ?: throw KotgresClassHasNoNameException("kotlin")
             return getPrimaryKeyDaoByString(name, conn)
             """.trimIndent()
             )
             .build()
     }
 
-    private fun getNoPkDaoByKclassFunctionKotlin(): FunSpec {
+
+    private fun getNoPkDaosFunctionKotlin(): FunSpec {
         return FunSpec.builder("getNoPrimaryKeyDao")
-            .addModifiers(KModifier.PUBLIC)
-            .addTypeVariable(templateTypeEntity)
-            .addParameter("klass", KClass::class.asTypeName().parameterizedBy(templateTypeEntity))
+            .addModifiers(KModifier.INLINE)
+            .addTypeVariable(templateTypeEntity.copy(reified = true))
             .addParameter(
                 ParameterSpec.Companion.builder("conn", AbstractKotgresConnectionPool::class.asClassName()).build()
             )
@@ -253,7 +251,7 @@ internal class DaoManagerBuilder(
             )
             .addCode(
                 """
-            val name = klass.simpleName ?: throw KotgresClassHasNoNameException("kotlin")
+            val name = E::class.simpleName ?: throw KotgresClassHasNoNameException("kotlin")
             return getNoPrimaryKeyDaoByString(name, conn)
             """.trimIndent()
             )
@@ -262,7 +260,14 @@ internal class DaoManagerBuilder(
 
     private fun getPkDaoByStringFunction(primaryKeyDaos: List<DaoInfo>): FunSpec {
         val functionGetDao = FunSpec.builder("getPrimaryKeyDaoByString")
-        functionGetDao.addModifiers(KModifier.PRIVATE)
+        functionGetDao.addKdoc("Only public because it's needed for inline functions\n")
+        functionGetDao.addModifiers(KModifier.INTERNAL)
+        functionGetDao.addAnnotation(
+            AnnotationSpec.builder(Deprecated::class)
+                .addMember("message = %S", "Use getPrimaryKeyDao instead")
+                .build()
+        )
+        functionGetDao.addAnnotation(PublishedApi::class)
         functionGetDao.addTypeVariable(templateTypeEntity)
         functionGetDao.addTypeVariable(templateTypeEntityPrimaryKey)
         functionGetDao.addParameter(ParameterSpec.Companion.builder("klass", String::class.asClassName()).build())
@@ -275,7 +280,7 @@ internal class DaoManagerBuilder(
         )
 
         functionGetDao.beginControlFlow("return when (klass.lowercase())")
-        primaryKeyDaos.forEach { (packageName, daoClassName) ->
+        primaryKeyDaos.forEach { (_, daoClassName) ->
             val daoReturn = "$daoClassName(conn) as PrimaryKeyDao<E, I>"
             functionGetDao.addStatement(
                 """${BuilderConstants.INDENTATION}"${
@@ -292,7 +297,14 @@ internal class DaoManagerBuilder(
 
     private fun getNoPkDaoByStringFunction(nonPrimaryKeyDaos: List<DaoInfo>): FunSpec {
         val functionGetDao = FunSpec.builder("getNoPrimaryKeyDaoByString")
-        functionGetDao.addModifiers(KModifier.PRIVATE)
+        functionGetDao.addKdoc("Only public because it's needed for inline functions\n")
+        functionGetDao.addModifiers(KModifier.INTERNAL)
+        functionGetDao.addAnnotation(
+            AnnotationSpec.builder(Deprecated::class)
+                .addMember("message = %S", "Use getNoPrimaryKeyDao instead")
+                .build()
+        )
+        functionGetDao.addAnnotation(PublishedApi::class)
         functionGetDao.addTypeVariable(templateTypeEntity)
         functionGetDao.addParameter(ParameterSpec.Companion.builder("klass", String::class.asClassName()).build())
         functionGetDao.addParameter(
@@ -305,7 +317,7 @@ internal class DaoManagerBuilder(
 
         functionGetDao.beginControlFlow("return when (klass.lowercase())")
 
-        nonPrimaryKeyDaos.forEach { (packageName, daoClassName) ->
+        nonPrimaryKeyDaos.forEach { (_, daoClassName) ->
             val daoReturn = "$daoClassName(conn) as NoPrimaryKeyDao<E>"
             functionGetDao.addStatement(
                 """${BuilderConstants.INDENTATION}"${
@@ -322,7 +334,7 @@ internal class DaoManagerBuilder(
 
     private fun getAllPrimaryKeyDaosProp(primaryKeyDaos: List<DaoInfo>): PropertySpec {
         val codeblock = CodeBlock.builder().addStatement("listOf(")
-        primaryKeyDaos.forEach { (packageName, className) ->
+        primaryKeyDaos.forEach { (_, className) ->
             codeblock.addStatement("${BuilderConstants.INDENTATION}\"$className\",")
         }
         codeblock.addStatement(")")
@@ -340,7 +352,7 @@ internal class DaoManagerBuilder(
 
     private fun getAllNoPrimaryKeyDaosProp(nonPrimaryKeyDaos: List<DaoInfo>): PropertySpec {
         val codeblock = CodeBlock.builder().addStatement("listOf(")
-        nonPrimaryKeyDaos.forEach { (packageName, className) ->
+        nonPrimaryKeyDaos.forEach { (_, className) ->
             codeblock.addStatement("${BuilderConstants.INDENTATION}\"$className\",")
         }
         codeblock.addStatement(")")

@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 class TestFloat : KotgresTest() {
 
     private val dao: PrimaryKeyDao<TableWithFloat, Int> by lazy {
-        DaoManager.getPrimaryKeyDao(TableWithFloat::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
 
     @Test

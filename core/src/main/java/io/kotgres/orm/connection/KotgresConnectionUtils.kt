@@ -10,7 +10,8 @@ import java.sql.ResultSet
 
 object KotgresConnectionUtils {
 
-    @Deprecated("Do not use, only public because it's needed for inline functions. Use KotgresConnectionPool.runSelectQueryReturningOne")
+    // Only public because it's needed for inline functions
+    @Deprecated("Use KotgresConnectionPool.runSelectQueryReturningOne")
     fun <T> runSelectQueryReturningOne(
         query: String,
         processRow: (ResultSet) -> T,
@@ -43,7 +44,8 @@ object KotgresConnectionUtils {
         }
     }
 
-    @Deprecated("Do not use, only public because it's needed for inline functions. Use KotgresConnectionPool.runSelectQueryReturningList")
+    // Only public because it's needed for inline functions
+    @Deprecated("Use KotgresConnectionPool.runSelectQueryReturningList")
     fun <T : Any> runSelectQueryReturningList(
         string: String, processRow: (ResultSet) -> T,
         getConnection: () -> Connection
@@ -69,7 +71,8 @@ object KotgresConnectionUtils {
         }
     }
 
-    @Deprecated("Do not use, only public because it's needed for inline functions")
+    // Only public because it's needed for inline functions
+    @Deprecated("Do not use, internal usage only")
     inline fun <reified T> get(resultSet: ResultSet): T {
         return resultSet.getObject(1, T::class.java)
     }

@@ -1,5 +1,7 @@
 package io.kotgres.types.bool
 
+import io.kotgres.orm.connection.AbstractKotgresConnectionPool
+import io.kotgres.orm.dao.NoPrimaryKeyDao
 import io.kotgres.orm.dao.PrimaryKeyDao
 import io.kotgres.orm.manager.DaoManager
 import io.kotgres.types.bool.classes.BoolAsBoolean
@@ -14,17 +16,18 @@ import kotlin.test.assertTrue
 
 const val TYPE_BOOL_TEST_TABLE = "table_with_bool"
 
-
 class TestBool : KotgresTest() {
 
+
+
     private val boolAsBooleanDao: PrimaryKeyDao<BoolAsBoolean, Int> by lazy {
-        DaoManager.getPrimaryKeyDao(BoolAsBoolean::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
     private val boolAsIntDao: PrimaryKeyDao<BoolAsInt, Int> by lazy {
-        DaoManager.getPrimaryKeyDao(BoolAsInt::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
     private val boolAsStringDao: PrimaryKeyDao<BoolAsString, Int> by lazy {
-        DaoManager.getPrimaryKeyDao(BoolAsString::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
 
     @Test

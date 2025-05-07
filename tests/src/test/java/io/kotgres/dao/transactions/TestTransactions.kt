@@ -16,7 +16,7 @@ import kotlin.test.assertNull
 class TestTransactions : KotgresTest() {
 
     private val countryDao: PrimaryKeyDao<Country, String> by lazy {
-        DaoManager.getPrimaryKeyDao(Country::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
 
     @Nested

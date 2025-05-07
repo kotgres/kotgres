@@ -17,7 +17,7 @@ class TestBigDecimal: KotgresTest() {
     inner class decimal {
 
         private val dao: PrimaryKeyDao<TableWithDecimal, Int> by lazy {
-            DaoManager.getPrimaryKeyDao(TableWithDecimal::class, kotgresConnectionPool)
+            DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
         }
 
         @Test
@@ -40,7 +40,7 @@ class TestBigDecimal: KotgresTest() {
     inner class numeric {
 
         private val dao: PrimaryKeyDao<TableWithNumeric, Int> by lazy {
-            DaoManager.getPrimaryKeyDao(TableWithNumeric::class, kotgresConnectionPool)
+            DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
         }
 
 

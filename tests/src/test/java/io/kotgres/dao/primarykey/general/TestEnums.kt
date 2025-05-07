@@ -18,23 +18,23 @@ import kotlin.test.assertEquals
 class TestEnums : KotgresTest() {
 
     private val vehicleFullEnumDao: PrimaryKeyDao<VehicleFullEnum, Int> by lazy {
-        DaoManager.getPrimaryKeyDao(VehicleFullEnum::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
 
     private val vehicleNoEnumInDbDao: PrimaryKeyDao<VehicleNoEnumInDb, Int> by lazy {
-        DaoManager.getPrimaryKeyDao(VehicleNoEnumInDb::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
 
     private val vehicleNoEnumInCodeDao: PrimaryKeyDao<VehicleNoEnumInCode, Int> by lazy {
-        DaoManager.getPrimaryKeyDao(VehicleNoEnumInCode::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
 
     private val vehicleNoEnumInCodeWithEnumAnnotationDao: PrimaryKeyDao<VehicleNoEnumInCodeWithEnumAnnotation, Int> by lazy {
-        DaoManager.getPrimaryKeyDao(VehicleNoEnumInCodeWithEnumAnnotation::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
 
     private val vehicleNoEnumsDao: PrimaryKeyDao<VehicleNoEnums, Int> by lazy {
-        DaoManager.getPrimaryKeyDao(VehicleNoEnums::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
 
     @Test

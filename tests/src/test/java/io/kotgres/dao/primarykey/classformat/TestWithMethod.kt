@@ -11,7 +11,7 @@ import kotlin.test.assertEquals
 class TestWithMethod : KotgresTest() {
 
     private val userWithMethodDao: PrimaryKeyDao<UserWithMethod, Int> by lazy {
-        DaoManager.getPrimaryKeyDao(UserWithMethod::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
 
     @Test

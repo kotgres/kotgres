@@ -12,7 +12,6 @@ class TestNullability : KotgresTest() {
 
     private val userDao: PrimaryKeyDao<UserWithId, Int> by lazy {
         DaoManager.getPrimaryKeyDao(
-            UserWithId::class.java,
             kotgresConnectionPool
         )
     }

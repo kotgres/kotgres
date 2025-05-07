@@ -19,11 +19,11 @@ const val TEST_TIMESTAMP_TABLE = "table_with_timestamp"
 class TestTimestamp : KotgresTest() {
 
     private val daoAsLocalDatetime: PrimaryKeyDao<TableWithTimestampAsLocalDateTime, Int> by lazy {
-        DaoManager.getPrimaryKeyDao(TableWithTimestampAsLocalDateTime::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
 
     private val daoAsDate: PrimaryKeyDao<TableWithTimestampAsDate, Int> by lazy {
-        DaoManager.getPrimaryKeyDao(TableWithTimestampAsDate::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
 
     private val exampleDate = LocalDateTime.of(2000, 1, 2, 6, 1, 5)

@@ -13,7 +13,7 @@ const val USER_WITH_UUID_PKEY_TABLE = "users_with_uuid_pkey"
 class TestUUID : KotgresTest() {
 
     private val userWithUuidPkeyDao: PrimaryKeyDao<UserWithUuidPkey, UUID> by lazy {
-        DaoManager.getPrimaryKeyDao(UserWithUuidPkey::class, kotgresConnectionPool)
+        DaoManager.getPrimaryKeyDao(kotgresConnectionPool)
     }
 
     @Test
