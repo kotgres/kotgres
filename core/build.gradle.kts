@@ -18,7 +18,7 @@ dependencies {
     // kotlin
     implementation(kotlin("stdlib-jdk8"))
     // kotgres dsl
-    implementation("com.github.kotgres:kotgres-dsl:v0.1.2")
+    implementation("com.github.kotgres:kotgres-dsl:v0.1.4")
     // metaprogramming
     implementation("com.google.devtools.ksp:symbol-processing-api:$kspVersion")
     implementation("com.squareup:kotlinpoet-ksp:1.14.2")

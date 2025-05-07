@@ -17,7 +17,7 @@ dependencies {
     implementation(project(":core"))
     ksp(project(":core"))
     // kotgres dsl
-    implementation("com.github.kotgres:kotgres-dsl:v0.1.2")
+    implementation("com.github.kotgres:kotgres-dsl:v0.1.4")
     // postgres driver
     implementation("org.postgresql:postgresql:42.6.0")
     // json

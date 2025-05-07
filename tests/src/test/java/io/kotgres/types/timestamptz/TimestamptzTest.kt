@@ -17,6 +17,7 @@ import org.junit.jupiter.api.assertThrows
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.util.*
 import kotlin.test.Test
 
 //
@@ -112,7 +113,7 @@ class TestTimestamptz : KotgresTest() {
         val rows = daoAsDate.runSelect(
             daoAsDate
                 .selectQuery()
-                .where("date" lessEq "µ")
+                .where("date" lessEq Date())
         )
         assertTrue(rows.isNotEmpty())
     }
