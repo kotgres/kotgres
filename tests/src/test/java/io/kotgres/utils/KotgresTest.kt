@@ -1,6 +1,5 @@
 package io.kotgres.utils
 
-import io.kotgres.createTestKotgresConnection
 import io.kotgres.orm.connection.AbstractKotgresConnectionPool
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
